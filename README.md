@@ -26,7 +26,7 @@ Injineer let's you add two types of objects: instaces and providers.
 ```
 
 Instances are just objects which have a name. They don't have dependencies. If an object depends on a name registered to an instance, it's the value you 
-set here that will be injected. They are essentially a singletons.
+set here that will be injected. 
 
 ### Providers
 
@@ -62,27 +62,27 @@ Say you we have the following situation:
 
 ```Objective-C
 
-[self addInstance: [[ProductsService alloc] init] 
-          forName: "productsService"];
+[container addInstance: [[ProductsService alloc] init] 
+               forName: "productsService"];
 
-[self addProviderForName: @"productsListViewController"
-             depedencies: @[ @"productsService", @"productDetailViewController" ]
-                 options: 0
-                 creator: (id (^)(NSDictionary *values)) creator {
-                     return [[ProductsListViewController alloc] init];
-                 }
+[container addProviderForName: @"productsListViewController"
+                  depedencies: @[ @"productsService", @"productDetailViewController" ]
+                      options: 0
+                      creator: (id (^)(NSDictionary *values)) creator {
+                          return [[ProductsListViewController alloc] init];
+                      }];
                  
- [self addProviderForName: @productDetailsViewController"
-             depedencies: @[ @"productsService" ]
-                 options: 0
-                 creator: (id (^)(NSDictionary *values)) creator {
-                     return [[ProductDetailsViewController alloc] init];
-                 }
+ [container addProviderForName: @productDetailsViewController"
+                   depedencies: @[ @"productsService" ]
+                       options: 0
+                       creator: (id (^)(NSDictionary *values)) creator {
+                           return [[ProductDetailsViewController alloc] init];
+                       }];
 ```
 
 Both view controllers depend on productsService and ProductsListViewController also depends on ProductDetailsViewController as the 
 latter is opened whenever a product is selected from the list. The problem with this arrangement is that the details controller
-is only created once. Instead what you wanto to do is create a new controller each time a product is selected. To accomplish this
+is only created once. Instead what you want is to do is create a new controller each time a product is selected. To accomplish this
 you need to change the name of the dependency from 'productDetailViewController' to 'productDetailViewControllerProvider'.
 
 
