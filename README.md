@@ -5,16 +5,14 @@ The framework introduces no dependencies in your code, so using it is almost com
 
 ## Example application
 
-I converted the example of another DI framework (Typhoon) to use Injineer: 
-
-http://link.to.example.com
-
+I converted the example of another DI framework (Typhoon) to use Injineer. You can find in the Example folder.
+I didn't udpdate the unit tests though, because they rely on custom functionality of Typhoon.
 
 ## How it works
 
-The whole project consists of a single file: INJContainer. This the place where to register your objects and their dependencies.
+The whole project consists of a single class: INJContainer. This the place where to register your objects and their dependencies.
 
-Injineer let's you add two types of objects: instaces and providers.
+You can add two types of objects: instaces and providers.
 
 ### Instances
 
@@ -43,27 +41,25 @@ set here that will be injected.
                     
 ```
 
-Providers are a bit more complex than instances. They too have a name, but can also have dependencies which are just names of other
-providers or instances. Every provider has a creator block whose job is to construct and return a object. 
+Providers are a bit more complex than instances. They too have names, but can also have dependencies which are just names of other
+providers or instances. Every provider has a creator block whose job is to construct and return an object. 
 It takes a dictionary as parameter which contains the resolved value for each dependency name. 
 
-If you use constructor injection you can pass the corredponding objects from the values dictionary to you init method. 
+If you use constructor injection you can pass the corresponding objects from the values dictionary to you init method. 
 
-For property injection Injineer by default will scan your object readwrite properties and set each one that is nil and has a 
-name of a dependency. You can turn off this behaviour by passing INJProviderOptionManualInit.
+For each property of the created object that is nil, has a setter and a name from the dependencies list, the framework will try to set it to the resolved value of the corresponding depdency. You can turn off this behaviour by passing the INJProviderOptionManualInit option.
 
-By default the constuctor block is called for each object which has the corresponding provider as a dependency. You can make your
-provider a singleton by adding the INJProviderOptionSingleton in options.
+By default a provider's constuctor block is called each time when another provider depends on the first provider's name. You can make your provider a singleton by adding the INJProviderOptionSingleton in options. In that case the provider's constructor block is called once and the returned instance is given to all other providers that depend on it.
 
 ### Checking for common errors
 
-After you specify all your instances and providers you can call the -checkForErrors method. It makes sure you are not depending on names which are not added to the container. This can usually occur due to spelling mistakes. It also does a topolgical sorting of the dependency graph in order to find any circular dependencies and inform you about them.
+After you specify all your instances and providers you can call the -checkForErrors method. It makes sure you are not depending on names which are not added to the container. This can usually occur due to spelling mistakes. It also does a topological sorting of the dependency graph in order to find any circular dependencies and throws an exception listing them.
 
 ### Common use cases
 
 #### Being able to create new objects at will
 
-Sometimes you want to have more control when an object you depend is created. A good example of this are view controllers. 
+Sometimes you want to have more control when an object you depend on is created. A good example of this are view controllers. 
 Say you we have the following situation:
 
 ```Objective-C
@@ -89,9 +85,9 @@ Say you we have the following situation:
 Both view controllers depend on productsService and ProductsListViewController also depends on ProductDetailsViewController as the 
 latter is opened whenever a product is selected from the list. The problem with this arrangement is that the details controller
 is only created once. Instead what you want is to do is create a new controller each time a product is selected. To accomplish this
-you need to change the name of the dependency from 'productDetailsViewController' to 'productDetailViewControllerProvider'. What this will do is instead of creating a new instance for details view controller and injecting it in the list view controller it will inject a block that returns a new ProductDetailsViewController instance. I.e.
+you need to change the name of the dependency from 'productDetailsViewController' to 'productDetailViewControllerProvider'. What this will do is instead of creating a new instance for details view controller and injecting it in the list view controller it will inject a block that returns a new ProductDetailsViewController instance. I.e.:
 
-instead of ProductsListViewController having a property
+instead of ProductsListViewController having a property:
 
 ```Objective-C
 
@@ -99,7 +95,7 @@ instead of ProductsListViewController having a property
 
 ```
 
-you will use
+it will have:
 
 ```Objective-C
 
@@ -107,11 +103,11 @@ you will use
 
 ```
 
-When you want a new details view controller instance you just use the object returned from  productDetailsViewControllerProvider(). This is the only place where the framework interferes with your code organization as you need to inject a block which returns the instance you want in this case. However, you are just adhering to a convention, not using other code or libraries.
+When you want a new details view controller instance you just use the object returned from  productDetailsViewControllerProvider(). This is the only place where the framework interferes with your code organization as you need to inject a block which returns the instance you want in this case. However, you are just adhering to a convention, not importing other code or libraries in your view controllers.
 
 #### Circular dependencies
 
-They are usually a code smell and Injinner does not support them out of the box but you can still have them if you want. Suppose you also have you have the following case:
+They are usually a code smell and Injinner does not support them out of the box but you can still have them if you want. Suppose you have the following dependencies:
 
 ```Objective-C
 
@@ -137,7 +133,7 @@ They are usually a code smell and Injinner does not support them out of the box 
                       }];
 ```
 
-This graph contains a circular dependency of the form rootViewController -> productsListViewController -> productsService -> rootViewController. It order to untagle this situation you can change the productService to depends on rootViewControllerProvider thus breaking the cycle. When you need an instance of rootViewController in the service just use the one returned from rootViewControllerProvider().
+This dependency graph contains a circular dependency of the form rootViewController -> productsListViewController -> productsService -> rootViewController. It order to untagle this situation you can change the productService to depend on rootViewControllerProvider thus breaking the cycle. When you need an instance of rootViewController in the service just use the one returned from rootViewControllerProvider().
 
 
 
