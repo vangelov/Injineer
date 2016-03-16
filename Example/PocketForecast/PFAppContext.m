@@ -37,7 +37,7 @@
     [container addInstance: self.themes forName: @"themes"];
     
     [container addProviderForName: @"weatherClient"
-                      depedencies: @[ @"weatherReportDao", @"conf" ]
+                      dependencies: @[ @"weatherReportDao", @"conf" ]
                           options: INJProviderOptionSingleton
                           creator: ^id(NSDictionary *values) {
                               PFWeatherClientBasicImpl *weatherClient = [[PFWeatherClientBasicImpl alloc] init];
@@ -53,14 +53,14 @@
                   forName: @"weatherReportDao"];
     
     [container addProviderForName: @"cityDao"
-                      depedencies: @[ @"userDefaults" ]
+                      dependencies: @[ @"userDefaults" ]
                           options: INJProviderOptionSingleton
                           creator: ^id(NSDictionary *dependencies) {
                               return [[PFCityDaoUserDefaultsImpl alloc] initWithDefaults: dependencies[@"userDefaults"]];
                           }];
     
     [container addProviderForName: @"theme"
-                      depedencies: @[ @"themes" ]
+                      dependencies: @[ @"themes" ]
                           options: INJProviderOptionSingleton | INJProviderOptionManualInit
                           creator: ^id(NSDictionary *dependencies) {
                               PFThemeFactory *themeFactory = [[PFThemeFactory alloc] initWithThemes: dependencies[@"themes"]];
@@ -68,13 +68,13 @@
                           }];
     
     [container addProviderForName: @"weatherReportView"
-                      depedencies: @[ @"theme" ]
+                      dependencies: @[ @"theme" ]
                           creator: ^id(NSDictionary *dependencies) {
                               return [[PFWeatherReportView alloc] init];;
                           }];
     
     [container addProviderForName: @"weatherReportViewController"
-                      depedencies: @[ @"weatherReportView", @"weatherClient", @"weatherReportDao", @"cityDao", @"rootViewControllerProvider" ]
+                      dependencies: @[ @"weatherReportView", @"weatherClient", @"weatherReportDao", @"cityDao", @"rootViewControllerProvider" ]
                           creator: ^id (NSDictionary *dependencies) {
                               return [[PFWeatherReportViewController alloc] initWithView: dependencies[@"weatherReportView"]
                                                                            weatherClient: dependencies[@"weatherClient"]
@@ -83,28 +83,28 @@
                           }];
     
     [container addProviderForName: @"rootViewController"
-                      depedencies: @[ @"weatherReportViewController", @"citiesListViewControllerProvider", @"addCityViewControllerProvider" ]
+                      dependencies: @[ @"weatherReportViewController", @"citiesListViewControllerProvider", @"addCityViewControllerProvider" ]
                           options: INJProviderOptionSingleton
                           creator:^id (NSDictionary *dependencies) {
                               return [[PFRootViewController alloc] initWithMainContentViewController: dependencies[@"weatherReportViewController"]];;
                           }];
     
     [container addProviderForName: @"window"
-                      depedencies: @[ @"rootViewController" ]
+                      dependencies: @[ @"rootViewController" ]
                           options: INJProviderOptionSingleton
                           creator: ^id(NSDictionary *dependencies) {
                               return [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
                           }];
     
     [container addProviderForName: @"citiesListViewController"
-                      depedencies: @[ @"cityDao", @"theme", @"rootViewControllerProvider" ]
+                      dependencies: @[ @"cityDao", @"theme", @"rootViewControllerProvider" ]
                           creator: ^id(NSDictionary *dependencies) {
                               return [[PFCitiesListViewController alloc] initWithCityDao: dependencies[@"cityDao"]
                                                                                    theme: dependencies[@"theme"]];
                           }];
     
     [container addProviderForName: @"addCityViewController"
-                      depedencies: @[ @"cityDao", @"theme", @"weatherClient", @"rootViewControllerProvider" ]
+                      dependencies: @[ @"cityDao", @"theme", @"weatherClient", @"rootViewControllerProvider" ]
                           creator: ^id(NSDictionary *dependencies) {
                               return [[PFAddCityViewController alloc] initWithNibName: @"AddCity"
                                                                                bundle: [NSBundle mainBundle]];;

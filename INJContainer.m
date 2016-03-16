@@ -33,17 +33,17 @@
 }
 
 - (void) addProviderForName: (NSString *) name
-                depedencies: (NSArray *) dependencies
+                dependencies: (NSArray *) dependencies
                     creator: (id (^)(NSDictionary *)) creator {
     
     [self addProviderForName: name
-                 depedencies: dependencies
+                    dependencies: dependencies
                      options: 0
                      creator: creator];
 }
 
 - (void) addProviderForName: (NSString *) name
-                depedencies: (NSArray *) dependencies
+               dependencies: (NSArray *) dependencies
                     options: (INJProviderOptions) options
                     creator: (id (^)(NSDictionary *values)) creator {
     

@@ -12,11 +12,11 @@ typedef NS_ENUM(NSUInteger, INJProviderOptions) {
              forName: (NSString *) name;
 
 - (void) addProviderForName: (NSString *) name
-                depedencies: (NSArray *) dependencies
+               dependencies: (NSArray *) dependencies
                     creator: (id (^)(NSDictionary *values)) creator;
 
 - (void) addProviderForName: (NSString *) name
-                depedencies: (NSArray *) dependencies
+               dependencies: (NSArray *) dependencies
                     options: (INJProviderOptions) options
                     creator: (id (^)(NSDictionary *values)) creator;
 
