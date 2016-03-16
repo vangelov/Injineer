@@ -5,7 +5,7 @@ The framework introduces no dependencies in your code, so using it is almost com
 
 ## Example application
 
-I converted the example of another DI framework (Typhoon) to use Injineer. You can find in the Example folder.
+I converted the example of another DI framework (Typhoon) to use Injineer. You can find it the Example folder.
 I didn't udpdate the unit tests though, because they rely on custom functionality of Typhoon.
 
 ## How it works
@@ -47,9 +47,9 @@ It takes a dictionary as parameter which contains the resolved value for each de
 
 If you use constructor injection you can pass the corresponding objects from the values dictionary to you init method. 
 
-For each property of the created object that is nil, has a setter and a name from the dependencies list, the framework will try to set it to the resolved value of the corresponding depdency. You can turn off this behaviour by passing the INJProviderOptionManualInit option.
+For each property of the created object that is nil, has a setter and a name from the dependencies list, the framework will try to set it to the resolved value of the corresponding dependency. You can turn off this behavior by passing the INJProviderOptionManualInit option.
 
-By default a provider's constuctor block is called each time when another provider depends on the first provider's name. You can make your provider a singleton by adding the INJProviderOptionSingleton in options. In that case the provider's constructor block is called once and the returned instance is given to all other providers that depend on it.
+By default a provider's constructor block is called each time when another provider depends on the first provider's name. You can make your provider a singleton by adding the INJProviderOptionSingleton in options. In that case the provider's constructor block is called once and the returned instance is given to all other providers that depend on it.
 
 ### Checking for common errors
 
@@ -68,14 +68,14 @@ Say you we have the following situation:
                forName: "productsService"];
 
 [container addProviderForName: @"productsListViewController"
-                  depedencies: @[ @"productsService", @"productDetailsViewController" ]
+                  dependencies: @[ @"productsService", @"productDetailsViewController" ]
                       options: 0
                       creator: (id (^)(NSDictionary *values)) creator {
                           return [[ProductsListViewController alloc] init];
                       }];
                  
  [container addProviderForName: @productDetailsViewController"
-                   depedencies: @[ @"productsService" ]
+                   dependencies: @[ @"productsService" ]
                        options: 0
                        creator: (id (^)(NSDictionary *values)) creator {
                            return [[ProductDetailsViewController alloc] init];
@@ -107,26 +107,26 @@ When you want a new details view controller instance you just use the object ret
 
 #### Circular dependencies
 
-They are usually a code smell and Injinner does not support them out of the box but you can still have them if you want. Suppose you have the following dependencies:
+They are usually a code smell and Injineer does not support them out of the box but you can still have them if you want. Suppose you have the following dependencies:
 
 ```Objective-C
 
 [container addProviderForName: @"rootViewController"
-                  depedencies: @[ @"productsListViewController" ]
+                  dependencies: @[ @"productsListViewController" ]
                       options: INJProviderOptionSingleton
                       creator: (id (^)(NSDictionary *values)) creator {
                           return [[RootViewController alloc] init];
                       }];
 
 [container addProviderForName: @"productsListViewController"
-                  depedencies: @[ @"productsService", @"productDetailsViewControllerProvider" ]
+                  dependencies: @[ @"productsService", @"productDetailsViewControllerProvider" ]
                       options: 0
                       creator: (id (^)(NSDictionary *values)) creator {
                           return [[ProductsListViewController alloc] init];
                       }];
                       
 [container addProviderForName: @"productsService"
-                  depedencies: @[ @"rootViewController" ]
+                 dependencies: @[ @"rootViewController" ]
                       options: INJProviderOptionSingleton
                       creator: (id (^)(NSDictionary *values)) creator {
                           return [[ProductsService alloc] init];
@@ -134,7 +134,6 @@ They are usually a code smell and Injinner does not support them out of the box 
 ```
 
 This dependency graph contains a circular dependency of the form rootViewController -> productsListViewController -> productsService -> rootViewController. It order to untagle this situation you can change the productService to depend on rootViewControllerProvider thus breaking the cycle. When you need an instance of rootViewController in the service just use the one returned from rootViewControllerProvider().
-
 
 
 
