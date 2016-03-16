@@ -138,7 +138,7 @@
 
 - (void) checkForErrors {
     [self checkForMissingValues];
-    [self checkForCycleReferences];
+    [self checkForCircularReferences];
 }
 
 - (void) checkForMissingValues {
@@ -151,7 +151,7 @@
             if(![self hasValueForName: dependency]) {
                 NSString *reason = [NSString stringWithFormat: @"Missing value for dependency '%@' for '%@'.", dependency, name];
                 
-                @throw [NSException exceptionWithName: @"MissingDependencyException"
+                @throw [NSException exceptionWithName: @"INJMissingDependencyException"
                                                reason: reason
                                              userInfo: nil];
             }
@@ -168,7 +168,7 @@
 }
 
 
-- (void) checkForCycleReferences {
+- (void) checkForCircularReferences {
     NSArray *names = self.nameDependencies.allKeys;
     NSMutableArray *cycleReferences = [NSMutableArray array];
     
@@ -188,9 +188,9 @@
     }
     
     if(cycleReferences.count > 0) {
-        NSString *reason = [NSString stringWithFormat: @"Cycle references found:\n%@", cycleReferences];
+        NSString *reason = [NSString stringWithFormat: @"Circular references found:\n%@", cycleReferences];
         
-        @throw [NSException exceptionWithName: @"CycleReferenceException"
+        @throw [NSException exceptionWithName: @"INJCircularReferencesException"
                                        reason: reason
                                      userInfo: nil];
     }
