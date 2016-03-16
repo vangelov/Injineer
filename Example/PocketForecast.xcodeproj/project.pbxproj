@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0FC7EBF913C643679D215992 /* libPods-PocketForecast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD2943E8EFE24EB5B86A64F3 /* libPods-PocketForecast.a */; };
-		5FDDA5EC1C999A96002F97FD /* INJContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDDA5EB1C999A96002F97FD /* INJContainer.m */; settings = {ASSET_TAGS = (); }; };
+		5FDDA5F21C99A5D4002F97FD /* INJContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDDA5F11C99A5D4002F97FD /* INJContainer.m */; settings = {ASSET_TAGS = (); }; };
 		6B2E1D9F18962CFB00BA4EE0 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2E1D9E18962CFB00BA4EE0 /* libxml2.dylib */; };
 		6B2E1DA018962D0100BA4EE0 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2E1D9E18962CFB00BA4EE0 /* libxml2.dylib */; };
 		6B9FABC016FEA9D800BABD3D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B9FABBE16FEA9D800BABD3D /* Default.png */; };
@@ -106,8 +106,8 @@
 /* Begin PBXFileReference section */
 		0036AD35FB5E8579F3A87CAB /* Pods-PocketForecastTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketForecastTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PocketForecastTests/Pods-PocketForecastTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0DBED6614EB640FFDEBAFC96 /* Pods-PocketForecast.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketForecast.release.xcconfig"; path = "Pods/Target Support Files/Pods-PocketForecast/Pods-PocketForecast.release.xcconfig"; sourceTree = "<group>"; };
-		5FDDA5EA1C999A96002F97FD /* INJContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INJContainer.h; sourceTree = "<group>"; };
-		5FDDA5EB1C999A96002F97FD /* INJContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INJContainer.m; sourceTree = "<group>"; };
+		5FDDA5F01C99A5D4002F97FD /* INJContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INJContainer.h; path = ../INJContainer.h; sourceTree = "<group>"; };
+		5FDDA5F11C99A5D4002F97FD /* INJContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INJContainer.m; path = ../INJContainer.m; sourceTree = "<group>"; };
 		609097971E734E02BFBD9A9C /* libPods-PocketForecastTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PocketForecastTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B2E1D9E18962CFB00BA4EE0 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		6B9FABBE16FEA9D800BABD3D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -298,8 +298,8 @@
 		6BE9744415AF01A3004472E2 = {
 			isa = PBXGroup;
 			children = (
-				5FDDA5EA1C999A96002F97FD /* INJContainer.h */,
-				5FDDA5EB1C999A96002F97FD /* INJContainer.m */,
+				5FDDA5F01C99A5D4002F97FD /* INJContainer.h */,
+				5FDDA5F11C99A5D4002F97FD /* INJContainer.m */,
 				6BE9745915AF01A3004472E2 /* PocketForecast */,
 				6BD5116D1880E794009C487A /* PocketForecastTests */,
 				6BE9745215AF01A3004472E2 /* Frameworks */,
@@ -856,7 +856,7 @@
 				6BE9746015AF01A3004472E2 /* main.m in Sources */,
 				6BE9746415AF01A3004472E2 /* PFAppDelegate.m in Sources */,
 				BA798CD6D23ACE87BFC6DAA4 /* PFWeatherReport.m in Sources */,
-				5FDDA5EC1C999A96002F97FD /* INJContainer.m in Sources */,
+				5FDDA5F21C99A5D4002F97FD /* INJContainer.m in Sources */,
 				BA798CFBF46EB10AC945B816 /* PFCurrentConditions.m in Sources */,
 				BA798873E9DA8CEE34984273 /* PFTemperature.m in Sources */,
 				BA7981088FA218ECD034170C /* PFWeatherClientBasicImpl.m in Sources */,
