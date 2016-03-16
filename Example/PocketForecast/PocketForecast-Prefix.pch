@@ -1,0 +1,27 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+//  TYPHOON FRAMEWORK
+//  Copyright 2013, Jasper Blues & Contributors
+//  All Rights Reserved.
+//
+//  NOTICE: The authors permit you to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+#import <Availability.h>
+
+#ifndef __IPHONE_4_0
+#warning "This project uses features only available in iOS SDK 4.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+#endif
+
+#import "OCLogTemplate.h"
+

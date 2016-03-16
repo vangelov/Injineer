@@ -1,0 +1,49 @@
+PODS:
+  - Expecta (0.2.4)
+  - ICLoader (1.0.4):
+    - NanoFrame
+  - NanoFrame (0.0.1)
+  - NGAParallaxMotion (1.1.0)
+  - NSURL+QueryDictionary (1.1.0)
+  - OCHamcrest (4.2.0)
+  - OCLogTemplate (1.0.1)
+  - OCMockito (1.4.0):
+    - OCHamcrest (~> 4.0)
+  - PaperFold (1.2)
+  - RaptureXML (1.0.1)
+
+DEPENDENCIES:
+  - Expecta (~> 0.2.1)
+  - ICLoader
+  - NanoFrame
+  - NGAParallaxMotion
+  - NSURL+QueryDictionary
+  - OCHamcrest
+  - OCLogTemplate
+  - OCMockito
+  - PaperFold (from `https://github.com/jasperblues/PaperFold-for-iOS.git`, tag `1.2-no-gesture-recognizers`)
+  - RaptureXML
+
+EXTERNAL SOURCES:
+  PaperFold:
+    :git: https://github.com/jasperblues/PaperFold-for-iOS.git
+    :tag: 1.2-no-gesture-recognizers
+
+CHECKOUT OPTIONS:
+  PaperFold:
+    :git: https://github.com/jasperblues/PaperFold-for-iOS.git
+    :tag: 1.2-no-gesture-recognizers
+
+SPEC CHECKSUMS:
+  Expecta: cfaf1d3e2e194ca704a25e997093d30a1ce70b61
+  ICLoader: 00592dc70b66252d58981369b42be47b668968c8
+  NanoFrame: 1c259be9c3241de2e60cccf430a85a1d25e4dd5b
+  NGAParallaxMotion: 8772f51f75e5177840053229bbf32bf6f7687e52
+  NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
+  OCHamcrest: c14c0b3f4c4e99363e5b87d97bae38c4438b6d5d
+  OCLogTemplate: 3a67ba6e6b40bc7675f6017cb71674e51cd68fa2
+  OCMockito: 4981140c9a9ec06c31af40f636e3c0f25f27e6b2
+  PaperFold: 7ebdf11028012a3e0f3906bd455054369ff79e4a
+  RaptureXML: b5c33c04c1a4adfd8ad0d5463329a31820596e82
+
+COCOAPODS: 0.39.0
