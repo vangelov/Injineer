@@ -53,7 +53,7 @@ By default a provider's constructor block is called each time when another provi
 
 ### Checking for common errors
 
-After you specify all your instances and providers you can call the -checkForErrors method. It makes sure you are not depending on names which are not added to the container. This can usually occur due to spelling mistakes. It also does a topological sorting of the dependency graph in order to find any circular dependencies and throws an exception listing them.
+After you specify all your instances and providers you can call the -checkForErrors method. It makes sure you are not depending on names which are not added to the container. This can usually occur due to spelling mistakes. It also does a topological sort of the dependency graph in order to find any circular dependencies and throws an exception listing them.
 
 ### Common use cases
 
