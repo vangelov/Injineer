@@ -1,12 +1,21 @@
 
 #import "INJContainer.h"
 
+typedef NS_ENUM(NSUInteger, INJNameState) {
+    INJNameStateUsed,
+    INJNameStateBeingUsed
+};
+
+NSString * const INJNameAlreadyUsedException = @"INJNameAlreadyUsedException";
+NSString * const INJMissingDependencyException = @"INJMissingDependencyException";
+NSString * const INJCircularReferencesException = @"INJCircularReferencesException";
+
 @interface INJContainer ()
 
 @property (strong, nonatomic) NSMutableDictionary *providers;
 @property (strong, nonatomic) NSMutableDictionary *singletonsCache;
 @property (strong, nonatomic) NSMutableDictionary *instances;
-@property (strong, nonatomic) NSMutableDictionary *usedNames;
+@property (strong, nonatomic) NSMutableDictionary *nameState;
 @property (strong, nonatomic) NSMutableDictionary *nameDependencies;
 
 @end
@@ -26,18 +35,32 @@
     return self;
 }
 
+- (void) throwIfNameIsUsed: (NSString *) name {
+    NSString *providerName = [self providerNameForName: name];
+
+    if(self.instances[name] || self.providers[providerName]) {
+        NSString *reason = [NSString stringWithFormat: @"Name '%@' has already been used.", name];
+    
+        @throw [NSException exceptionWithName: INJNameAlreadyUsedException
+                                       reason: reason
+                                     userInfo: nil];
+    }
+}
+
 - (void) addInstance: (id) instance
              forName: (NSString *) name {
+    
+    [self throwIfNameIsUsed: name];
     
     self.instances[name] = instance;
 }
 
 - (void) addProviderForName: (NSString *) name
-                dependencies: (NSArray *) dependencies
+               dependencies: (NSArray *) dependencies
                     creator: (id (^)(NSDictionary *)) creator {
     
     [self addProviderForName: name
-                    dependencies: dependencies
+                dependencies: dependencies
                      options: 0
                      creator: creator];
 }
@@ -46,6 +69,8 @@
                dependencies: (NSArray *) dependencies
                     options: (INJProviderOptions) options
                     creator: (id (^)(NSDictionary *values)) creator {
+    
+    [self throwIfNameIsUsed: name];
     
     self.nameDependencies[name] = dependencies;
     
@@ -151,7 +176,7 @@
             if(![self hasValueForName: dependency]) {
                 NSString *reason = [NSString stringWithFormat: @"Missing value for dependency '%@' for '%@'.", dependency, name];
                 
-                @throw [NSException exceptionWithName: @"INJMissingDependencyException"
+                @throw [NSException exceptionWithName: INJMissingDependencyException
                                                reason: reason
                                              userInfo: nil];
             }
@@ -163,71 +188,77 @@
     NSString *providerName = [self providerNameForName: name];
     
     return self.instances[name] != nil ||
-    self.providers[name] != nil ||
-    self.providers[providerName] != nil;
+           self.providers[name] != nil ||
+           self.providers[providerName] != nil;
 }
 
 
 - (void) checkForCircularReferences {
-    NSArray *names = self.nameDependencies.allKeys;
-    NSMutableArray *cycleReferences = [NSMutableArray array];
-    
-    self.usedNames = [NSMutableDictionary dictionary];
+    NSArray *names = [self.nameDependencies.allKeys sortedArrayUsingSelector: @selector(compare:)];
+    NSMutableArray *cycles = [NSMutableArray array];
+
+    self.nameState = [NSMutableDictionary dictionary];
     
     for(NSString *name in names) {
-        if(!self.usedNames[name]) {
+        if(!self.nameState[name]) {
+            BOOL hasCycle = NO;
             NSMutableArray *path = [NSMutableArray array];
-            [self outputTopologicallySortedPathForName: name inArray: path];
             
-            NSArray *cycleReferencesInPath = [self cycleReferencesForPath: path];
+            [self checkForCycleStartingAtName: name
+                                  currentPath: path
+                                     hasCycle: &hasCycle];
             
-            if(cycleReferences.count > 0) {
-                [cycleReferences addObjectsFromArray: cycleReferencesInPath];
+            if(hasCycle) {
+                [cycles addObject: path];
             }
         }
     }
     
-    if(cycleReferences.count > 0) {
-        NSString *reason = [NSString stringWithFormat: @"Circular references found:\n%@", cycleReferences];
+    if(cycles.count > 0) {
+        NSString *reason = [NSString stringWithFormat: @"Circular references found: %@", cycles];
         
-        @throw [NSException exceptionWithName: @"INJCircularReferencesException"
+        @throw [NSException exceptionWithName: INJCircularReferencesException
                                        reason: reason
-                                     userInfo: nil];
+                                     userInfo: @{
+                                                 @"cycles": cycles
+                                                 }];
     }
 }
 
-- (void) outputTopologicallySortedPathForName: (NSString *) name
-                                      inArray: (NSMutableArray *) path {
+- (NSString *) checkForCycleStartingAtName: (NSString *) name
+                               currentPath: (NSMutableArray *) path
+                                  hasCycle: (BOOL *) hasCycle {
     
-    self.usedNames[name] = @(YES);
+    if([self.nameState[name] isEqual: @(INJNameStateBeingUsed)]) {
+        [path insertObject: name atIndex: 0];
+        return name;
+    }
+    
+    if([self.nameState[name] isEqual: @(INJNameStateUsed)]) {
+        return nil;
+    }
+    
+    self.nameState[name] = @(INJNameStateBeingUsed);
     
     for(NSString *dependency in self.nameDependencies[name]) {
-        if(!self.usedNames[dependency]) {
-            [self outputTopologicallySortedPathForName: dependency inArray: path];
-        }
-    }
-    
-    [path insertObject: name atIndex: 0];
-}
+        NSString *name2 = [self checkForCycleStartingAtName: dependency
+                                                currentPath: path
+                                                   hasCycle: hasCycle];
 
-- (NSArray *) cycleReferencesForPath: (NSArray *) path {
-    NSMutableArray *cycleReferences = [NSMutableArray array];
-    
-    for(NSInteger i = 0; i < path.count; i++) {
-        NSArray *currentName = path[i];
-        NSArray *previousNames = [path subarrayWithRange: NSMakeRange(0, i)];
-        
-        for(NSString *dependency in self.nameDependencies[currentName]) {
-            if([previousNames containsObject: dependency]) {
-                [cycleReferences addObject: @{
-                                              @"from": currentName,
-                                              @"to": dependency
-                                              }];
+        if (name2) {
+            [path insertObject: name atIndex: 0];
+            
+            if ([name2 isEqualToString: name]) {
+                *hasCycle = YES;
             }
+            
+            return name2;
         }
     }
     
-    return cycleReferences;
+    self.nameState[name] = @(INJNameStateUsed);
+    
+    return nil;
 }
 
 @end

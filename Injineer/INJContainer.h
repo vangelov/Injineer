@@ -6,6 +6,10 @@ typedef NS_ENUM(NSUInteger, INJProviderOptions) {
     INJProviderOptionManualInit = 1 << 1
 };
 
+extern NSString * const INJNameAlreadyUsedException;
+extern NSString * const INJMissingDependencyException;
+extern NSString * const INJCircularReferencesException;
+
 @interface INJContainer : NSObject
 
 - (void) addInstance: (id) instance
