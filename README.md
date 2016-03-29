@@ -3,6 +3,18 @@
 Injineer is simpler than other DI frameworks for Objective-C but just as powerful. 
 The framework introduces no dependencies in your code, so using it is almost completely transparent (see below).
 
+## Instalation
+
+To install using [CocoaPods](https://github.com/cocoapods/cocoapods), add the following line to your Podfile:
+
+```ruby
+pod 'KVOController'
+```
+
+Alternatively, you can just drag and drop INJContainer.h and INJContainer.m into your Xcode project, agreeing to copy files if needed.
+
+### Manually: Just drag INJContainer .h and .m files to your project.
+
 ## Example application
 
 I converted the example of another DI framework (Typhoon) to use Injineer. You can find it the Example folder.
