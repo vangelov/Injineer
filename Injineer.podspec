@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/vangelov/Injineer"
   s.license      = { :type => "ISC", :file => "LICENSE" }
   s.author             = { "Vladimir Angelov" => "vlady.angelov@gmail.com" }
-  s.source       = { :git => "https://github.com/vangelov/Injineer.git", :tag => "1.0.0" }
+  s.source       = { :git => "https://github.com/vangelov/Injineer.git", :tag => "1.0.1" }
   s.source_files  = "Injineer", "Injineer/**/*.{h,m}"
   s.requires_arc = true
   s.ios.deployment_target = "7.0"
