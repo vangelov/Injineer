@@ -2,6 +2,7 @@ PODS:
   - Expecta (0.2.4)
   - ICLoader (1.0.4):
     - NanoFrame
+  - Injineer (1.0.1)
   - NanoFrame (0.0.1)
   - NGAParallaxMotion (1.1.0)
   - NSURL+QueryDictionary (1.1.0)
@@ -15,6 +16,7 @@ PODS:
 DEPENDENCIES:
   - Expecta (~> 0.2.1)
   - ICLoader
+  - Injineer (= 1.0.1)
   - NanoFrame
   - NGAParallaxMotion
   - NSURL+QueryDictionary
@@ -37,6 +39,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Expecta: cfaf1d3e2e194ca704a25e997093d30a1ce70b61
   ICLoader: 00592dc70b66252d58981369b42be47b668968c8
+  Injineer: bb596b8217e3031cdc62192b1920c9dae1039f60
   NanoFrame: 1c259be9c3241de2e60cccf430a85a1d25e4dd5b
   NGAParallaxMotion: 8772f51f75e5177840053229bbf32bf6f7687e52
   NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e

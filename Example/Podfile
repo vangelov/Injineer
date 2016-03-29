@@ -1,4 +1,4 @@
-platform :ios, '6.1'
+platform :ios, '7.0'
 
 target :PocketForecast, :exclusive => true do
 
@@ -9,7 +9,7 @@ target :PocketForecast, :exclusive => true do
   pod 'OCLogTemplate'
   pod 'PaperFold', :git => 'https://github.com/jasperblues/PaperFold-for-iOS.git', :tag => '1.2-no-gesture-recognizers'
   pod 'RaptureXML'
-  pod ‘Injineer’
+  pod ‘Injineer’, '1.0.1'
 end
 
 # Test Dependencies
