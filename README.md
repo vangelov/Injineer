@@ -15,8 +15,9 @@ Alternatively, you can just drag and drop INJContainer.h and INJContainer.m into
 
 ## Example application
 
-I converted the example of another DI framework (Typhoon) to use Injineer. You can find it the Example folder.
-I didn't udpdate the unit tests though, because they rely on custom functionality of Typhoon.
+I converted the example of another DI framework (Typhoon) to use Injineer. You can find it the Example folder. Just type pod install in the Example directory before running it. 
+
+I didn't udpdate the unit tests though, because they rely on test utilities provided by Typhoon. You don't need such utils with Injineer. You can either create a new container for your tests or just init the objects you are testing manually.
 
 ## How it works
 
@@ -78,16 +79,16 @@ Say you we have the following situation:
                forName: "productsService"];
 
 [container addProviderForName: @"productsListViewController"
-                  dependencies: @[ @"productsService", @"productDetailsViewController" ]
+                 dependencies: @[ @"productsService", @"productDetailsViewController" ]
                       options: 0
-                      creator: (id (^)(NSDictionary *values)) creator {
+                      creator: ^id(NSDictionary *values) {
                           return [[ProductsListViewController alloc] init];
                       }];
                  
  [container addProviderForName: @productDetailsViewController"
-                   dependencies: @[ @"productsService" ]
+                  dependencies: @[ @"productsService" ]
                        options: 0
-                       creator: (id (^)(NSDictionary *values)) creator {
+                       creator: ^id(NSDictionary *values) {
                            return [[ProductDetailsViewController alloc] init];
                        }];
 ```
@@ -101,7 +102,7 @@ instead of ProductsListViewController having a property:
 
 ```Objective-C
 
-@property (nonatomic, string) ProductDetailsViewController *productDetailsViewController
+@property (nonatomic, strong) ProductDetailsViewController *productDetailsViewController
 
 ```
 
@@ -109,7 +110,7 @@ it will have:
 
 ```Objective-C
 
-@property (nonatomic, string) ProductDetailsViewController *(^productDetailsViewControllerProvider)(void)
+@property (nonatomic, strong) ProductDetailsViewController *(^productDetailsViewControllerProvider)(void)
 
 ```
 
@@ -122,23 +123,23 @@ They are usually a code smell and Injineer does not support them out of the box 
 ```Objective-C
 
 [container addProviderForName: @"rootViewController"
-                  dependencies: @[ @"productsListViewController" ]
+                 dependencies: @[ @"productsListViewController" ]
                       options: INJProviderOptionSingleton
-                      creator: (id (^)(NSDictionary *values)) creator {
+                      creator: ^id(NSDictionary *values) creator {
                           return [[RootViewController alloc] init];
                       }];
 
 [container addProviderForName: @"productsListViewController"
-                  dependencies: @[ @"productsService", @"productDetailsViewControllerProvider" ]
+                 dependencies: @[ @"productsService", @"productDetailsViewControllerProvider" ]
                       options: 0
-                      creator: (id (^)(NSDictionary *values)) creator {
+                      creator: ^id(NSDictionary *values) {
                           return [[ProductsListViewController alloc] init];
                       }];
                       
 [container addProviderForName: @"productsService"
                  dependencies: @[ @"rootViewController" ]
                       options: INJProviderOptionSingleton
-                      creator: (id (^)(NSDictionary *values)) creator {
+                      creator: ^id(NSDictionary *values) {
                           return [[ProductsService alloc] init];
                       }];
 ```
