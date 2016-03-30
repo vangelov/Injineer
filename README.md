@@ -85,7 +85,7 @@ Say you we have the following situation:
                           return [[ProductsListViewController alloc] init];
                       }];
                  
- [container addProviderForName: @productDetailsViewController"
+ [container addProviderForName: @"productDetailsViewController"
                   dependencies: @[ @"productsService" ]
                        options: 0
                        creator: ^id(NSDictionary *values) {
